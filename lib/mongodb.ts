@@ -4,10 +4,16 @@ if (!process.env.MONGODB_URI) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
 }
 
+declare global {
+  namespace globalThis {
+    var _mongoClientPromise: Promise<MongoClient>;
+  }
+}
+
 const uri = process.env.MONGODB_URI;
 
 let client;
-let clientPromise;
+let clientPromise: Promise<MongoClient>;
 
 if (process.env.NODE_ENV === "development") {
   // In development mode, use a global variable so that the value
