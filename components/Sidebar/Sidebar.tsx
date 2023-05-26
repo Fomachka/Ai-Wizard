@@ -20,8 +20,9 @@ interface ChatProps {
   title: string;
   _id: string;
 }
-const Sidebar = () => {
+const Sidebar = ({ chatId }: { chatId: string | null }) => {
   const [allChats, setAllChats] = useState<ChatProps[] | []>([]);
+  // const [currentTitle, setCurrentTitle] = useState<string>("");
   const [menuToggle, setMenuToggle] = useState<boolean>(false);
   const { user } = useUser();
 
@@ -41,9 +42,25 @@ const Sidebar = () => {
     setAllChats(json?.chats || []);
   };
 
+  // const fetchAndUpdateTitle = async () => {
+  //   const response = await fetch(`/api/database/updateTitle`, {
+  //     method: "POST",
+  //     body: JSON.stringify({ chatId: chatId, title: finalTitle }),
+  //   });
+  //   const json = await response.json();
+  //   console.log("from title: ", json);
+
+  //   // setCurrentTitle(json?.chat.title);
+  // };
+
   useEffect(() => {
     fetchChats();
-  }, []);
+  }, [chatId]);
+
+  // useEffect(() => {
+  //   console.log("update database");
+  //   fetchAndUpdateTitle();
+  // }, [finalTitle]);
 
   return (
     <div className="bg-[#202123] text-white flex flex-col overflow-hidden px-4 py-4">
@@ -55,7 +72,7 @@ const Sidebar = () => {
       </div>
       <div className="border-b border-gray-400/30 mb-4"></div>
       <Link
-        href="/api/auth/logout"
+        href="/chat"
         className="py-4 px-6 bg-[#FAE69E] hover:bg-[#e1cf8e] transition-colors rounded-lg text-[#202123] flex gap-4 "
       >
         <FontAwesomeIcon icon={faPlus} className="text-[#202123] w-3" />
@@ -69,9 +86,16 @@ const Sidebar = () => {
           <Link
             href={`/chat/${chat._id}`}
             key={chat._id}
-            className="py-3 px-4 bg-[#343641] rounded-lg space-y-1 items-center"
+            className={`py-3 px-4 rounded-lg space-y-1 items-center hover:bg-[#343641] ${
+              chatId === chat._id ? "bg-[#343641] " : ""
+            }`}
           >
-            <p className="font-bold text-lg tracking-wide">{chat.title}</p>
+            <p
+              className="font-bold text-lg tracking-wide overflow-hidden text-ellipsis whitespace-nowrap"
+              title={chat.title}
+            >
+              {chat.title}
+            </p>
             <h3 className="text-gray-500">{chat.messages[0].content}</h3>
           </Link>
         ))}
@@ -103,14 +127,19 @@ const Sidebar = () => {
             menuToggle ? "inline-block" : "hidden"
           }`}
         >
-          <div className="flex gap-4 justify-start px-4 py-3 hover:bg-[#343641] ">
-            <FontAwesomeIcon icon={faXmark} className="text-white w-3" />
-            <p className="">Clear all chats</p>
-          </div>
+          <Link href="/api/auth/logout">
+            <div className="flex gap-4 justify-start px-5 py-3 hover:bg-[#343641] ">
+              <FontAwesomeIcon
+                icon={faArrowRightFromBracket}
+                className="text-white w-[18px]"
+              />
+              <p>Log out</p>
+            </div>
+          </Link>
           <div className="border-t border-gray-400/30 "></div>
-          <div className="flex gap-4 justify-start px-4 py-3 hover:bg-[#343641]">
-            <FontAwesomeIcon icon={faXmark} className="text-white w-3" />
-            <p className="">Clear all chats</p>
+          <div className="flex gap-4 justify-start px-5 py-3 hover:bg-[#343641]">
+            <FontAwesomeIcon icon={faTrashCan} className="text-white w-4" />
+            <p>Clear all chats</p>
           </div>
         </div>
         {/* <Link href="/api/auth/logout" className="rounded-lg text-white flex">

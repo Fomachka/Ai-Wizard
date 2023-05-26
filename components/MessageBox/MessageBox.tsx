@@ -1,15 +1,16 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { faHatWizard, faMicrochip } from "@fortawesome/free-solid-svg-icons";
+import { faHatWizard } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 const MessageBox = ({ role, content }: { role: string; content: string }) => {
   const { user } = useUser();
+  console.log("USER ", user);
   return (
-    <div className={`flex gap-4 rounded-xl  ${role === "user" && "flex-row-reverse"}`}>
+    <div className={`flex gap-4 rounded-xl ${role === "user" && "flex-row-reverse"}`}>
       <div>
-        {role === "user" && user && (
+        {role === "user" && !!user && (
           <Image
             src={user.picture as string}
             width={44}
@@ -20,7 +21,7 @@ const MessageBox = ({ role, content }: { role: string; content: string }) => {
           //   <p className="text-xs">{user.name}</p>
         )}
         {role === "assistant" && (
-          <div className="flex bg-[#E7FE4D] w-11 h-11 items-center justify-center rounded-full shadow-md shadow-white/50 text-white">
+          <div className="flex bg-[#FAE69E] w-11 h-11 items-center justify-center rounded-full  text-white">
             <FontAwesomeIcon icon={faHatWizard} className="text-slate-800 w-6 " />
           </div>
         )}
