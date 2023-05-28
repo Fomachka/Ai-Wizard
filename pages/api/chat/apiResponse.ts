@@ -35,8 +35,8 @@ export default async function handler(req: any) {
           }),
         }
       );
-      const json = await response.json();
-      chatMessages = json.chat.messages || [];
+      const data = await response.json();
+      chatMessages = data.chat.messages || [];
     } else {
       const response = await fetch(
         `${req.headers.get("origin")}/api/database/createChat`,
@@ -50,25 +50,25 @@ export default async function handler(req: any) {
         }
       );
       const data = await response.json();
+      chatMessages = data.messages || [];
       chatId = data._id;
       newChatId = data._id;
-      chatMessages = data.messages || [];
     }
 
-    const messagesToInclude = [];
+    const chatHistory = [];
     chatMessages.reverse();
     let usedTokens = 0;
     for (let chatMessage of chatMessages) {
       const messageTokens = chatMessage.content.length / 4;
       usedTokens = usedTokens + messageTokens;
       if (usedTokens <= 2000) {
-        messagesToInclude.push(chatMessage);
+        chatHistory.push(chatMessage);
       } else {
         break;
       }
     }
 
-    messagesToInclude.reverse();
+    chatHistory.reverse();
 
     const stream = await OpenAIEdgeStream(
       "https://api.openai.com/v1/chat/completions",
@@ -80,7 +80,7 @@ export default async function handler(req: any) {
         method: "POST",
         body: JSON.stringify({
           model: "gpt-3.5-turbo",
-          messages: [infoAboutAI, ...messagesToInclude],
+          messages: [infoAboutAI, ...chatHistory],
           stream: true,
         }),
       },
