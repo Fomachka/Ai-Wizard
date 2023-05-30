@@ -3,14 +3,13 @@ import { useEffect, useState } from "react";
 import {
   faArrowRightFromBracket,
   faEllipsisH,
-  faEllipsisVertical,
   faPlus,
-  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { faMessage, faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 interface ChatProps {
   messages: {
@@ -22,13 +21,11 @@ interface ChatProps {
 }
 const Sidebar = ({ chatId }: { chatId: string | null }) => {
   const [allChats, setAllChats] = useState<ChatProps[] | []>([]);
-  // const [currentTitle, setCurrentTitle] = useState<string>("");
   const [menuToggle, setMenuToggle] = useState<boolean>(false);
   const { user } = useUser();
+  const router = useRouter();
 
   const handleMenuToggle = () => {
-    console.log(menuToggle);
-
     setMenuToggle((prev) => !prev);
   };
 
@@ -42,32 +39,24 @@ const Sidebar = ({ chatId }: { chatId: string | null }) => {
     setAllChats(json?.chats || []);
   };
 
-  // const fetchAndUpdateTitle = async () => {
-  //   const response = await fetch(`/api/database/updateTitle`, {
-  //     method: "POST",
-  //     body: JSON.stringify({ chatId: chatId, title: finalTitle }),
-  //   });
-  //   const json = await response.json();
-  //   console.log("from title: ", json);
-
-  //   // setCurrentTitle(json?.chat.title);
-  // };
+  const handleDeleteAllChats = async () => {
+    await fetch("/api/database/deleteAllChats", {
+      method: "DELETE",
+    });
+    router.push("/chat");
+    setAllChats([]);
+  };
 
   useEffect(() => {
     fetchChats();
   }, [chatId]);
-
-  // useEffect(() => {
-  //   console.log("update database");
-  //   fetchAndUpdateTitle();
-  // }, [finalTitle]);
 
   return (
     <div className="bg-[#202123] text-white flex flex-col overflow-hidden px-4 py-4">
       <div className="flex mb-4 justify-between items-center">
         <h2 className="text-xl ml-1 tracking-wide">Chats</h2>
         <div className="rounded-full bg-[#FAE69E] w-7 h-7 flex justify-center items-center">
-          <p className="text-black ">2</p>
+          <p className="text-black ">{allChats.length > 0 ? allChats.length : 0}</p>
         </div>
       </div>
       <div className="border-b border-gray-400/30 mb-4"></div>
@@ -82,7 +71,7 @@ const Sidebar = ({ chatId }: { chatId: string | null }) => {
         <p className=" text-gray-400 text-sm tracking-wide">All Chats</p>
       </div>
       <div className="flex-1 overflow-auto flex flex-col gap-4">
-        {allChats.map((chat: ChatProps) => (
+        {allChats?.map((chat: ChatProps) => (
           <Link
             href={`/chat/${chat._id}`}
             key={chat._id}
@@ -90,13 +79,15 @@ const Sidebar = ({ chatId }: { chatId: string | null }) => {
               chatId === chat._id ? "bg-[#343641] " : ""
             }`}
           >
-            <p
+            <h3
               className="font-bold text-lg tracking-wide overflow-hidden text-ellipsis whitespace-nowrap"
               title={chat.title}
             >
-              {chat.title}
+              {chat.title[0].toUpperCase() + chat.title.substring(1)}
+            </h3>
+            <p className="text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap">
+              {chat.messages[1].content}
             </p>
-            <h3 className="text-gray-500">{chat.messages[0].content}</h3>
           </Link>
         ))}
       </div>
@@ -137,7 +128,10 @@ const Sidebar = ({ chatId }: { chatId: string | null }) => {
             </div>
           </Link>
           <div className="border-t border-gray-400/30 "></div>
-          <div className="flex gap-4 justify-start px-5 py-3 hover:bg-[#343641]">
+          <div
+            className="flex gap-4 justify-start px-5 py-3 hover:bg-[#343641]"
+            onClick={handleDeleteAllChats}
+          >
             <FontAwesomeIcon icon={faTrashCan} className="text-white w-4" />
             <p>Clear all chats</p>
           </div>

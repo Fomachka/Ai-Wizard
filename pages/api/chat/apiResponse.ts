@@ -4,9 +4,26 @@ export const config = {
   runtime: "edge",
 };
 
-export default async function handler(req: any) {
+export default async function handler(req: {
+  json: () =>
+    | { message: string; chatId: string }
+    | PromiseLike<{ message: string; chatId: string }>;
+  headers: { get: (arg0: string) => any };
+}) {
   try {
-    const { message, chatId: chatIdParam } = await req.json();
+    const { message, chatId: chatIdParam }: { message: string; chatId: string } =
+      await req.json();
+
+    if (typeof message !== "string" || message.length > 200 || !message) {
+      return new Response(
+        {
+          message: "Please write a message that is under 200 characters long",
+        },
+        {
+          status: 422,
+        }
+      );
+    }
 
     let chatId = chatIdParam;
 
@@ -109,6 +126,11 @@ export default async function handler(req: any) {
 
     return new Response(stream);
   } catch (error) {
-    console.log("ERROR IN SENDMESSAGE: ", error);
+    return new Response(
+      { message: "An error occured sending a message" },
+      {
+        status: 500,
+      }
+    );
   }
 }

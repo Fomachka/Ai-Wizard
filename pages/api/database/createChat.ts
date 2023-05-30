@@ -1,11 +1,20 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import clientPromise from "../../../lib/mongodb";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const session = await getSession(req, res);
     const user = session?.user;
-    const { message, title } = req.body;
+    const { message } = req.body;
+
+    if (typeof message !== "string" || message.length > 200 || !message) {
+      res.status(422).json({
+        message: "Please write a message that is under 200 characters long",
+      });
+      return;
+    }
+
     const newUserMessage = {
       role: "user",
       content: message,
