@@ -196,7 +196,7 @@ const Chat = ({
                 </p>
               </div>
             )}
-            <div className="flex-1 flex flex-col-reverse bg-[#111111] text-white overflow-y-auto p-6 ">
+            <div className="flex-1 flex flex-col-reverse bg-[#111111] text-white overflow-y-auto px-8 py-6">
               {!(allUserPrompts.length > 0) && !messageFromAI && <ChatExamples />}
               {allUserPrompts.length > 0 && (
                 <div className="mb-auto space-y-6">

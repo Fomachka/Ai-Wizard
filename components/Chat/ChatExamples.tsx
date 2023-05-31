@@ -9,13 +9,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ChatExamples = () => {
   return (
-    <div className="flex flex-col gap-16 justify-start items-center h-full mt-8 overflow-scroll">
+    <div className="flex flex-col gap-16 justify-start items-center h-full mt-8 lg:mt-40">
       <div className="flex gap-6 justify-center items-center flex-wrap">
         <FontAwesomeIcon icon={faHatWizard} className="text-white w-10" />
         <h1 className="text-3xl tracking-wide font-semibold text-center">Wizard AI</h1>
       </div>
-      <section className="flex flex-col items-center gap-8 w-full text-center">
-        <article className="space-y-4 w-full ">
+      <section className="flex flex-col items-center gap-8 w-full text-center lg:flex-row lg:items-start lg:gap-4 lg:max-w-fit">
+        <article className="space-y-6 w-full">
           <div className="flex items-center justify-center gap-4">
             <FontAwesomeIcon icon={faWandMagicSparkles} className="text-white w-6" />
             <h3 className="text-lg tracking-wide">Examples</h3>
@@ -29,7 +29,7 @@ const ChatExamples = () => {
             </li>
           </ul>
         </article>
-        <article className="space-y-4 w-full ">
+        <article className="space-y-6 w-full">
           <div className="flex items-center justify-center gap-4">
             <FontAwesomeIcon icon={faWandMagic} className="text-white w-5" />
             <h3 className="text-lg tracking-wide">Capabilities</h3>
@@ -43,7 +43,7 @@ const ChatExamples = () => {
             </li>
           </ul>
         </article>
-        <article className="space-y-4 w-full ">
+        <article className="space-y-6 w-full ">
           <div className="flex items-center justify-center gap-4">
             <FontAwesomeIcon icon={faHandSparkles} className="text-white w-6" />
             <h3 className="text-lg tracking-wide">Limitations</h3>
