@@ -1,7 +1,8 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import clientPromise from "../../../lib/mongodb";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const session = await getSession(req, res);
     const user = session?.user;
@@ -26,6 +27,6 @@ export default async function handler(req: any, res: any) {
 
     res.status(200).json({ chats });
   } catch (error) {
-    res.status(500).json({ message: "An error occured when getting the chat list" });
+    res.status(500).json({ message: "An error occured retrieving the chat list" });
   }
 }

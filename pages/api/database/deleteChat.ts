@@ -1,4 +1,3 @@
-import { getSession } from "@auth0/nextjs-auth0";
 import clientPromise from "../../../lib/mongodb";
 import { ObjectId } from "mongodb";
 import type { NextApiRequest, NextApiResponse } from "next";

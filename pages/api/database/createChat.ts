@@ -8,9 +8,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const user = session?.user;
     const { message } = req.body;
 
-    if (typeof message !== "string" || message.length > 200 || !message) {
+    if (typeof message !== "string" || message.length > 300 || !message) {
       res.status(422).json({
-        message: "Please write a message that is under 200 characters long",
+        message: "Enter a message that is 300 characters or less",
       });
       return;
     }
@@ -34,6 +34,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   } catch (error) {
     res.status(500).json({ message: "An error occured creating a new chat" });
-    console.log("CREATE NEW CHAT ERROR: ", error);
   }
 }

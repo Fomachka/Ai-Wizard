@@ -14,8 +14,8 @@ const MessageBox = ({ role, content }: { role: string; content: string }) => {
 
   const { user } = useUser();
   return (
-    <div className={`flex gap-4 rounded-xl ${role === "user" && "flex-row-reverse"} `}>
-      <div>
+    <div className={`flex gap-4 ${role === "user" && "flex-row-reverse"} `}>
+      <div className="hidden xsm:block">
         {role === "user" && !!user && (
           <Image
             src={user.picture as string}

@@ -4,28 +4,21 @@ export const config = {
   runtime: "edge",
 };
 
-export default async function handler(req: {
-  json: () =>
-    | { message: string; chatId: string }
-    | PromiseLike<{ message: string; chatId: string }>;
-  headers: { get: (arg0: string) => any };
-}) {
+export default async function handler(req: any) {
   try {
-    const { message, chatId: chatIdParam }: { message: string; chatId: string } =
-      await req.json();
+    const { message, chatId: chatIdParam } = await req.json();
+    let chatId = chatIdParam;
 
-    if (typeof message !== "string" || message.length > 200 || !message) {
+    if (!message || typeof message !== "string" || message.length > 300) {
       return new Response(
         {
-          message: "Please write a message that is under 200 characters long",
+          message: "Enter a message that is 300 characters or less",
         },
         {
           status: 422,
         }
       );
     }
-
-    let chatId = chatIdParam;
 
     const infoAboutAI = {
       role: "system",
@@ -127,7 +120,7 @@ export default async function handler(req: {
     return new Response(stream);
   } catch (error) {
     return new Response(
-      { message: "An error occured sending a message" },
+      { message: "AI has failed to answer a question." },
       {
         status: 500,
       }

@@ -1,17 +1,23 @@
 import Head from "next/head";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import { useState, ChangeEvent, FormEvent, useEffect, useRef } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { streamReader } from "openai-edge-stream";
 import { v4 as uuid4 } from "uuid";
 import MessageBox from "../../components/MessageBox/MessageBox";
-import { faComments, faTrashCan, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import {
+  faComments,
+  faTrashCan,
+  faPaperPlane,
+  faBars,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { getSession } from "@auth0/nextjs-auth0";
 import clientPromise from "lib/mongodb";
 import { ObjectId } from "mongodb";
+import ChatExamples from "components/Chat/ChatExamples";
 
-interface newMessageProps {
+interface NewMessageProps {
   _id: string;
   role: string;
   content: string;
@@ -24,18 +30,29 @@ const Chat = ({
 }: {
   chatId: string | null;
   title: string | null;
-  messages: newMessageProps[] | [];
+  messages: NewMessageProps[] | [];
 }) => {
   const router = useRouter();
   const [messageFromAI, setMessageFromAI] = useState("");
+  const [toggleMenu, setMenuToggle] = useState<boolean>(false);
   const [currentChat, setCurrentChat] = useState(chatId);
-  const [userPrompt, setUserPrompt] = useState<newMessageProps[] | []>([]);
+  const [userPrompt, setUserPrompt] = useState<NewMessageProps[] | []>([]);
   const [text, setText] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [allMessages, setAllMessages] = useState("");
   const [newChatId, setNewChatId] = useState<string | null>(null);
-
   const chatIsChanged = chatId !== currentChat;
+
+  const handlePressingEnter = (event: any) => {
+    if (event.code === "Enter") {
+      handleSubmit(event);
+    }
+  };
+
+  const handleMenu = () => {
+    setMenuToggle((prev) => !prev);
+    console.log(toggleMenu);
+  };
 
   useEffect(() => {
     setUserPrompt([]);
@@ -69,7 +86,6 @@ const Chat = ({
   };
 
   const handleDeleteSingleChat = async () => {
-    console.log("deleted single chat ", currentChat);
     await fetch(`/api/database/deleteChat`, {
       method: "POST",
       headers: {
@@ -138,25 +154,40 @@ const Chat = ({
       <Head>
         <title>{title}</title>
       </Head>
-      <div className="grid h-screen grid-cols-[320px_1fr]">
-        <Sidebar chatId={chatId} />
+      <div className={`grid h-screen md:grid-cols-[320px_1fr] relative overflow-y-auto`}>
+        <Sidebar
+          chatId={chatId}
+          toggleSideMenu={toggleMenu}
+          handleSideMenu={handleMenu}
+        />
+
         <div className="bg-[#2f333c] max-h-screen">
           <div className="flex flex-col h-full">
             <header className="flex justify-between items-center px-8 py-6 bg-[#111111]/90 text-lg tracking-wide">
               <div className="flex gap-6">
-                <FontAwesomeIcon icon={faComments} className="text-[#EDEBE8] w-6" />
-                <p className="text-[#EDEBE8]">
+                <FontAwesomeIcon
+                  icon={faBars}
+                  className="text-[#EDEBE8] w-6 md:hidden"
+                  onClick={handleMenu}
+                />
+                <FontAwesomeIcon
+                  icon={faComments}
+                  className="text-[#EDEBE8] w-6 hidden md:inline"
+                />
+                <p className="text-[#EDEBE8] hidden md:inline">
                   {title
                     ? title[0].toUpperCase() + title.substring(1)
                     : "Conversation with AI"}
                 </p>
               </div>
-              <div
-                className="p-3.5 bg-[#252527] rounded-md"
-                onClick={handleDeleteSingleChat}
-              >
-                <FontAwesomeIcon icon={faTrashCan} className="text-[#EDEBE8] w-4 " />
-              </div>
+              {messages.length > 0 && (
+                <div
+                  className="p-3.5 bg-[#252527] rounded-md"
+                  onClick={handleDeleteSingleChat}
+                >
+                  <FontAwesomeIcon icon={faTrashCan} className="text-[#EDEBE8] w-4 " />
+                </div>
+              )}
             </header>
             {messageFromAI && chatIsChanged && (
               <div className="bg-red-600/70 sticky-0 w-full h-24 flex justify-center items-center">
@@ -166,11 +197,7 @@ const Chat = ({
               </div>
             )}
             <div className="flex-1 flex flex-col-reverse bg-[#111111] text-white overflow-y-auto p-6 ">
-              {!(allUserPrompts.length > 0) && !messageFromAI && (
-                <div>
-                  <p>No messsages!</p>
-                </div>
-              )}
+              {!(allUserPrompts.length > 0) && !messageFromAI && <ChatExamples />}
               {allUserPrompts.length > 0 && (
                 <div className="mb-auto space-y-6">
                   {allUserPrompts.map((prompt) => (
@@ -193,11 +220,12 @@ const Chat = ({
                     value={text}
                     onChange={(e) => handleMessage(e)}
                     className="w-full resize-none rounded-lg bg-[#1C1A1D]  py-4 px-4 max-h-18 text-white focus:bg-[#1C1A1D] focus:outline focus:outline-gray-600 lg:text-lg tracking-wide"
+                    onKeyDown={handlePressingEnter}
                     placeholder={isLoading ? "" : "Magic begins here..."}
                   />
                   <button
                     type="submit"
-                    className="absolute right-6 top-1/2 p-3 rounded-md transform -translate-y-1/2  disabled:bg-gray-500 disabled:cursor-not-allowed"
+                    className="absolute right-6 top-1/2 p-3 rounded-md transform -translate-y-1/2  disabled:bg-gray-500 disabled:cursor-not-allowed hover:bg-[#252527]"
                     disabled={isLoading}
                   >
                     <FontAwesomeIcon icon={faPaperPlane} className="text-[#EDEBE8] w-6" />
@@ -248,7 +276,7 @@ export const getServerSideProps = async (context: any) => {
       props: {
         chatId,
         title: chat?.title,
-        messages: chat?.messages.map((message: newMessageProps) => ({
+        messages: chat?.messages.map((message: NewMessageProps) => ({
           ...message,
           _id: uuid4(),
         })),

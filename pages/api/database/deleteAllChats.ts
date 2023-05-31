@@ -9,6 +9,5 @@ export default async function handler(res: NextApiResponse) {
     res.status(200).json({});
   } catch (error) {
     res.status(500).json({ message: "An error occured deleting all chats" });
-    console.log("DELETE ALL CHATS ERROR: ", error);
   }
 }

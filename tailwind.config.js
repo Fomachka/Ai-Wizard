@@ -10,6 +10,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        xsm: {
+          min: "425px",
+        },
+      },
       typography: {
         DEFAULT: {
           css: {

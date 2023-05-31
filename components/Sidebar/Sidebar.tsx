@@ -4,8 +4,9 @@ import {
   faArrowRightFromBracket,
   faEllipsisH,
   faPlus,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { faMessage, faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
@@ -19,7 +20,15 @@ interface ChatProps {
   title: string;
   _id: string;
 }
-const Sidebar = ({ chatId }: { chatId: string | null }) => {
+const Sidebar = ({
+  chatId,
+  toggleSideMenu,
+  handleSideMenu,
+}: {
+  chatId: string | null;
+  toggleSideMenu: boolean;
+  handleSideMenu: () => void;
+}) => {
   const [allChats, setAllChats] = useState<ChatProps[] | []>([]);
   const [menuToggle, setMenuToggle] = useState<boolean>(false);
   const { user } = useUser();
@@ -34,7 +43,6 @@ const Sidebar = ({ chatId }: { chatId: string | null }) => {
       method: "POST",
     });
     const json = await response.json();
-    console.log("CHAT LIST: ", json);
 
     setAllChats(json?.chats || []);
   };
@@ -52,8 +60,19 @@ const Sidebar = ({ chatId }: { chatId: string | null }) => {
   }, [chatId]);
 
   return (
-    <div className="bg-[#202123] text-white flex flex-col overflow-hidden px-4 py-4">
+    <div
+      className={`flex bg-[#202123] text-white flex-col overflow-hidden px-4 py-4 md:flex md:static ${
+        toggleSideMenu ? "absolute h-screen z-10" : "hidden "
+      }`}
+    >
       <div className="flex mb-4 justify-between items-center">
+        {toggleSideMenu && (
+          <FontAwesomeIcon
+            icon={faXmark}
+            className="text-white w-5 md:hidden"
+            onClick={handleSideMenu}
+          />
+        )}
         <h2 className="text-xl ml-1 tracking-wide">Chats</h2>
         <div className="rounded-full bg-[#FAE69E] w-7 h-7 flex justify-center items-center">
           <p className="text-black ">{allChats.length > 0 ? allChats.length : 0}</p>
@@ -85,8 +104,8 @@ const Sidebar = ({ chatId }: { chatId: string | null }) => {
             >
               {chat.title[0].toUpperCase() + chat.title.substring(1)}
             </h3>
-            <p className="text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap">
-              {chat.messages[1].content}
+            <p className="text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap max-w-[320px]">
+              {chat.messages[1]?.content}
             </p>
           </Link>
         ))}
@@ -118,6 +137,14 @@ const Sidebar = ({ chatId }: { chatId: string | null }) => {
             menuToggle ? "inline-block" : "hidden"
           }`}
         >
+          <div
+            className="flex gap-4 justify-start px-5 py-3 hover:bg-[#343641]"
+            onClick={handleDeleteAllChats}
+          >
+            <FontAwesomeIcon icon={faTrashCan} className="text-white w-4" />
+            <p>Clear all chats</p>
+          </div>
+          <div className="border-t border-gray-400/30 "></div>
           <Link href="/api/auth/logout">
             <div className="flex gap-4 justify-start px-5 py-3 hover:bg-[#343641] ">
               <FontAwesomeIcon
@@ -127,26 +154,7 @@ const Sidebar = ({ chatId }: { chatId: string | null }) => {
               <p>Log out</p>
             </div>
           </Link>
-          <div className="border-t border-gray-400/30 "></div>
-          <div
-            className="flex gap-4 justify-start px-5 py-3 hover:bg-[#343641]"
-            onClick={handleDeleteAllChats}
-          >
-            <FontAwesomeIcon icon={faTrashCan} className="text-white w-4" />
-            <p>Clear all chats</p>
-          </div>
         </div>
-        {/* <Link href="/api/auth/logout" className="rounded-lg text-white flex">
-          <p>Logout</p>
-          <div className="flex items-center gap-4">
-            <div className="bg-[#343641] w-10 h-10 flex justify-center items-center rounded-lg">
-              <FontAwesomeIcon
-                icon={faArrowRightFromBracket}
-                className="text-white w-4"
-              />
-            </div>
-          </div>
-        </Link> */}
       </div>
     </div>
   );

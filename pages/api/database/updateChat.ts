@@ -1,6 +1,6 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import clientPromise from "../../../lib/mongodb";
-import { ObjectId } from "mongodb";
+import { ObjectId, PushOperator } from "mongodb";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -22,19 +22,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (
+      !content ||
       typeof content !== "string" ||
-      (role === "user" && content.length > 200) ||
-      !content
+      (role === "user" && content.length > 300) ||
+      (role === "assistant" && content.length > 100000)
     ) {
       res.status(422).json({
-        message: "Please write proper content that is under 200 characters long",
+        message: "Enter content that is 300 characters or less",
       });
       return;
     }
 
+    // validate role
     if (role !== "user" && role !== "assistant") {
       res.status(422).json({
-        message: "Role must be either 'assistant' or 'user'",
+        message: "role must be either 'assistant' or 'user'",
       });
       return;
     }
@@ -50,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             role,
             content,
           },
-        },
+        } as unknown as PushOperator<Document>,
       },
       {
         returnDocument: "after",
