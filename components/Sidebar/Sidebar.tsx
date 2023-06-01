@@ -4,6 +4,7 @@ import {
   faArrowRightFromBracket,
   faEllipsisH,
   faPlus,
+  faToggleOff,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
@@ -11,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useTheme } from "next-themes";
 
 interface ChatProps {
   messages: {
@@ -33,6 +35,7 @@ const Sidebar = ({
   const [menuToggle, setMenuToggle] = useState<boolean>(false);
   const { user } = useUser();
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
 
   const handleMenuToggle = () => {
     setMenuToggle((prev) => !prev);
@@ -55,13 +58,17 @@ const Sidebar = ({
     setAllChats([]);
   };
 
+  const handleSwitchTheme = () => {
+    return theme == "dark" ? setTheme("light") : setTheme("dark");
+  };
+
   useEffect(() => {
     fetchChats();
   }, [chatId]);
 
   return (
     <div
-      className={`flex bg-[#202123] text-white flex-col overflow-hidden px-4 py-4 md:flex md:static ${
+      className={`flex dark:bg-[#202123] bg-gray-200 dark:text-white flex-col overflow-hidden px-4 py-4 md:flex md:static ${
         toggleSideMenu ? "absolute h-screen z-10" : "hidden "
       }`}
     >
@@ -69,42 +76,44 @@ const Sidebar = ({
         {toggleSideMenu && (
           <FontAwesomeIcon
             icon={faXmark}
-            className="text-white w-5 md:hidden"
+            className="w-5 md:hidden dark:text-white text-gray-800"
             onClick={handleSideMenu}
           />
         )}
         <h2 className="text-xl ml-1 tracking-wide">Chats</h2>
-        <div className="rounded-full bg-[#FAE69E] w-7 h-7 flex justify-center items-center">
-          <p className="text-black ">{allChats.length > 0 ? allChats.length : 0}</p>
+        <div className="rounded-full bg-[#FAE69E]  w-7 h-7 flex justify-center items-center">
+          <p className="text-[#111111]">{allChats.length > 0 ? allChats.length : 0}</p>
         </div>
       </div>
       <div className="border-b border-gray-400/30 mb-4"></div>
       <Link
         href="/chat"
-        className="py-4 px-6 bg-[#FAE69E] hover:bg-[#e1cf8e] transition-colors rounded-lg text-[#202123] flex gap-4 "
+        className="py-4 px-6 bg-[#ffe895] dark:hover:bg-[#e1cf8e] hover:bg-[#f3de8d] transition-colors rounded-lg text-[#202123] flex gap-4 "
       >
         <FontAwesomeIcon icon={faPlus} className="text-[#202123] w-3" />
-        <p className="">Create new chat</p>
+        <p>Create new chat</p>
       </Link>
       <div className="flex gap-3 items-center px-1 mt-6 mb-3 ">
-        <p className=" text-gray-400 text-sm tracking-wide">All Chats</p>
+        <p className="dark:text-gray-400 text-gray-500 text-sm tracking-wide">
+          All Chats
+        </p>
       </div>
       <div className="flex-1 overflow-auto flex flex-col gap-4">
         {allChats?.map((chat: ChatProps) => (
           <Link
             href={`/chat/${chat._id}`}
             key={chat._id}
-            className={`py-3 px-4 rounded-lg space-y-1 items-center hover:bg-[#343641] ${
-              chatId === chat._id ? "bg-[#343641] " : ""
+            className={`py-3 px-4 rounded-lg space-y-1 items-center dark:hover:bg-[#343641] hover:bg-slate-400/50 ${
+              chatId === chat._id ? "dark:bg-[#343641] bg-slate-400/30 " : ""
             }`}
           >
             <h3
-              className="font-bold text-lg tracking-wide overflow-hidden text-ellipsis whitespace-nowrap"
+              className="font-bold text-lg tracking-wide overflow-hidden text-ellipsis whitespace-nowrap dark:text-white text-gray-800"
               title={chat.title}
             >
               {chat.title[0].toUpperCase() + chat.title.substring(1)}
             </h3>
-            <p className="text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap max-w-[320px]">
+            <p className="dark:text-gray-500 text-gray-500/70 overflow-hidden text-ellipsis whitespace-nowrap max-w-[320px]">
               {chat.messages[1]?.content}
             </p>
           </Link>
@@ -112,8 +121,8 @@ const Sidebar = ({
       </div>
       <div className="border-t border-gray-400/30 mt-6 mb-4"></div>
       <div
-        className={`flex justify-between items-center px-3 py-3 hover:bg-[#343641] rounded-lg hover:cursor-pointer relative ${
-          menuToggle && "bg-[#343641] "
+        className={`flex justify-between items-center px-3 py-3 dark:hover:bg-[#343641] hover:bg-slate-400/30 rounded-lg hover:cursor-pointer relative ${
+          menuToggle && "dark:bg-[#343641] bg-gray-300"
         }`}
         onClick={handleMenuToggle}
       >
@@ -130,28 +139,45 @@ const Sidebar = ({
           <p className="tracking-wide font-light ">{user?.name}</p>
         </div>
         <div>
-          <FontAwesomeIcon icon={faEllipsisH} className="text-gray-400 w-4" />
+          <FontAwesomeIcon
+            icon={faEllipsisH}
+            className="dark:text-gray-400 text-gray-500 w-4"
+          />
         </div>
         <div
-          className={`flex flex-col gap-2 py-2 absolute w-full left-0 top-[-140px] bg-[#111111] select-none rounded-lg ${
+          className={`flex flex-col gap-2 py-2 absolute w-full left-0 top-[-205px] dark:bg-[#111111] bg-[#f9fcfc] select-none rounded-lg ${
             menuToggle ? "inline-block" : "hidden"
           }`}
         >
           <div
-            className="flex gap-4 justify-start px-5 py-3 hover:bg-[#343641]"
+            className="flex gap-4 justify-start px-5 py-3 dark:hover:bg-[#343641] hover:bg-slate-400/30"
+            onClick={handleSwitchTheme}
+          >
+            <FontAwesomeIcon
+              icon={faToggleOff}
+              className="dark:text-white text-gray-800 w-4"
+            />
+            <p className="dark:text-gray-100 text-gray-800">Switch color mode</p>
+          </div>
+          <div className="border-t border-gray-400/30"></div>
+          <div
+            className="flex gap-4 justify-start px-5 py-3 dark:hover:bg-[#343641] hover:bg-slate-400/30"
             onClick={handleDeleteAllChats}
           >
-            <FontAwesomeIcon icon={faTrashCan} className="text-white w-4" />
-            <p>Clear all chats</p>
+            <FontAwesomeIcon
+              icon={faTrashCan}
+              className="dark:text-gray-100 text-gray-800 w-4"
+            />
+            <p className="dark:text-gray-100 text-gray-800">Clear all chats</p>
           </div>
           <div className="border-t border-gray-400/30 "></div>
           <Link href="/api/auth/logout">
-            <div className="flex gap-4 justify-start px-5 py-3 hover:bg-[#343641] ">
+            <div className="flex gap-4 justify-start px-5 py-3 dark:hover:bg-[#343641] hover:bg-slate-400/30">
               <FontAwesomeIcon
                 icon={faArrowRightFromBracket}
-                className="text-white w-[18px]"
+                className="dark:text-gray-100 text-gray-800 w-[18px]"
               />
-              <p>Log out</p>
+              <p className="dark:text-gray-100 text-gray-800">Log out</p>
             </div>
           </Link>
         </div>

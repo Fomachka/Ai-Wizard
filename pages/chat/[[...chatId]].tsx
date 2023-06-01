@@ -161,20 +161,20 @@ const Chat = ({
           handleSideMenu={handleMenu}
         />
 
-        <div className="bg-[#2f333c] max-h-screen">
+        <div className="dark:bg-[#1C1A1D] bg-[#ebecef] max-h-screen">
           <div className="flex flex-col h-full">
-            <header className="flex justify-between items-center px-8 py-6 bg-[#111111]/90 text-lg tracking-wide">
+            <header className="flex justify-between items-center px-8 py-6  text-lg tracking-wide">
               <div className="flex gap-6">
                 <FontAwesomeIcon
                   icon={faBars}
-                  className="text-[#EDEBE8] w-6 md:hidden"
+                  className="dark:text-[#EDEBE8] text-[#9a999a] w-6 md:hidden"
                   onClick={handleMenu}
                 />
                 <FontAwesomeIcon
                   icon={faComments}
-                  className="text-[#EDEBE8] w-6 hidden md:inline"
+                  className="dark:text-[#EDEBE8] text-[#757575] w-6 hidden md:inline"
                 />
-                <p className="text-[#EDEBE8] hidden md:inline">
+                <p className="dark:text-[#EDEBE8] text-[#3b3b3b] hidden md:inline">
                   {title
                     ? title[0].toUpperCase() + title.substring(1)
                     : "Conversation with AI"}
@@ -182,10 +182,13 @@ const Chat = ({
               </div>
               {messages.length > 0 && (
                 <div
-                  className="p-3.5 bg-[#252527] rounded-md"
+                  className="p-3.5 dark:bg-[#252527] bg-[#d1d0d365] rounded-md"
                   onClick={handleDeleteSingleChat}
                 >
-                  <FontAwesomeIcon icon={faTrashCan} className="text-[#EDEBE8] w-4 " />
+                  <FontAwesomeIcon
+                    icon={faTrashCan}
+                    className="dark:text-[#EDEBE8] text-[#757575] w-4 "
+                  />
                 </div>
               )}
             </header>
@@ -196,7 +199,7 @@ const Chat = ({
                 </p>
               </div>
             )}
-            <div className="flex-1 flex flex-col-reverse bg-[#111111] text-white overflow-y-auto px-8 py-6">
+            <div className="flex-1 flex flex-col-reverse dark:bg-[#111111] bg-[#F6F8FC] text-white overflow-y-auto px-8 py-6">
               {!(allUserPrompts.length > 0) && !messageFromAI && <ChatExamples />}
               {allUserPrompts.length > 0 && (
                 <div className="mb-auto space-y-6">
@@ -213,22 +216,26 @@ const Chat = ({
                 </div>
               )}
             </div>
-            <footer className={`bg-[#111111] px-8 py-8 `}>
+            <footer className={`dark:bg-[#111111] bg-[#F6F8FC] px-8 py-8 `}>
               <form onSubmit={handleSubmit}>
                 <fieldset className="flex relative" disabled={isLoading}>
                   <textarea
                     value={text}
                     onChange={(e) => handleMessage(e)}
-                    className="w-full resize-none rounded-lg bg-[#1C1A1D]  py-4 px-4 max-h-18 text-white focus:bg-[#1C1A1D] focus:outline focus:outline-gray-600 lg:text-lg tracking-wide"
+                    className="w-full resize-none rounded-lg dark:bg-[#1C1A1D] py-4 px-4 max-h-18 bg-[#ebecef] dark:text-[#D1D5DB] text-[#454444] focus:outline  focus:outline-gray-400 lg:text-lg tracking-wide"
                     onKeyDown={handlePressingEnter}
                     placeholder={isLoading ? "" : "Magic begins here..."}
                   />
                   <button
                     type="submit"
-                    className="absolute right-6 top-1/2 p-3 rounded-md transform -translate-y-1/2  disabled:bg-gray-500 disabled:cursor-not-allowed hover:bg-[#252527]"
+                    className="absolute right-6 top-1/2 p-3 rounded-md transform -translate-y-1/2  dark:disabled:bg-gray-500 
+                    disabled:bg-gray-400/70 disabled:cursor-not-allowed dark:hover:bg-[#252527] hover:bg-[#D1D0D3]"
                     disabled={isLoading}
                   >
-                    <FontAwesomeIcon icon={faPaperPlane} className="text-[#EDEBE8] w-6" />
+                    <FontAwesomeIcon
+                      icon={faPaperPlane}
+                      className="dark:text-[#EDEBE8] text-[#757575] w-6"
+                    />
                   </button>
                 </fieldset>
               </form>

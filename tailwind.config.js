@@ -8,6 +8,7 @@ module.exports = {
     // Or if using `src` directory:
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {
       screens: {
@@ -19,14 +20,15 @@ module.exports = {
         DEFAULT: {
           css: {
             pre: {
-              color: "#d1d5db",
-              backgroundColor: "#111111",
+              color: "white",
+              backgroundColor: "#202123",
+              border: "1px solid gray",
             },
             code: {
-              backgroundColor: "#1C30BC",
-              padding: "1px",
+              backgroundColor: "#FAE69E",
+              padding: "2px 3px",
               borderRadius: "4px",
-              color: "#f5f5f5",
+              color: "#202123",
             },
             "code::before": {
               content: '""',

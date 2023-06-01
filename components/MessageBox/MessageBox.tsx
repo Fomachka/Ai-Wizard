@@ -26,7 +26,7 @@ const MessageBox = ({ role, content }: { role: string; content: string }) => {
           />
         )}
         {role === "assistant" && (
-          <div className="flex bg-[#FAE69E] w-11 h-11 items-center justify-center rounded-full  text-white">
+          <div className="flex dark:bg-[#FAE69E] bg-[#fae69e] w-11 h-11 items-center justify-center rounded-full ">
             <FontAwesomeIcon icon={faHatWizard} className="text-[#111111] w-6 " />
           </div>
         )}
@@ -35,17 +35,21 @@ const MessageBox = ({ role, content }: { role: string; content: string }) => {
         <div
           className={`flex gap-10 items-center ${role === "user" && "flex-row-reverse"}`}
         >
-          <div className="text-sm font-semibold text-gray-200 ">
+          <div className="text-sm font-semibold dark:text-gray-200 text-[#111111]/90">
             {role === "assistant" ? "Wizard AI" : user?.name}
           </div>
-          <p className="text-[0.6rem] text-gray-400 tracking-wide">{time}</p>
+          <p className="text-[0.6rem] dark:text-gray-400 text-gray-500 tracking-wide">
+            {time}
+          </p>
         </div>
         <div
-          className={`flex flex-col rounded-xl w-fit bg-[#1C1A1D]  tracking-wide lg:text-lg prose prose-invert prose-p:m-0 ${
+          className={`flex flex-col rounded-xl  dark:bg-[#1C1A1D] bg-[#ebecef] tracking-wide lg:text-lg prose prose-zinc dark:prose-invert prose-p:m-0  ${
             role === "user" ? "rounded-tr-none p-4" : "rounded-tl-none p-8"
           }`}
         >
-          <ReactMarkdown className="">{content}</ReactMarkdown>
+          <ReactMarkdown className="dark:text-[#D1D5DB] text-[#111111] prose-code:text-xs sm:prose-code:text-sm md:prose-code:text-base ">
+            {content}
+          </ReactMarkdown>
         </div>
       </div>
     </div>
