@@ -167,7 +167,7 @@ const Chat = ({
               <div className="flex gap-6">
                 <FontAwesomeIcon
                   icon={faBars}
-                  className="dark:text-[#EDEBE8] text-[#9a999a] w-6 md:hidden"
+                  className="dark:text-[#EDEBE8] text-[#757575] w-6 md:hidden"
                   onClick={handleMenu}
                 />
                 <FontAwesomeIcon
@@ -229,7 +229,7 @@ const Chat = ({
                   <button
                     type="submit"
                     className="absolute right-6 top-1/2 p-3 rounded-md transform -translate-y-1/2  dark:disabled:bg-gray-500 
-                    disabled:bg-gray-400/70 disabled:cursor-not-allowed dark:hover:bg-[#252527] hover:bg-[#D1D0D3]"
+                    disabled:bg-gray-400/70 disabled:cursor-not-allowed dark:hover:bg-[#252527] hover:bg-[#d1d0d365]"
                     disabled={isLoading}
                   >
                     <FontAwesomeIcon

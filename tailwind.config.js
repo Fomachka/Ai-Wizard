@@ -11,6 +11,9 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      transitionProperty: {
+        width: "width",
+      },
       screens: {
         xsm: {
           min: "425px",

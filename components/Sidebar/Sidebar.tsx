@@ -68,15 +68,15 @@ const Sidebar = ({
 
   return (
     <div
-      className={`flex dark:bg-[#202123] bg-gray-200 dark:text-white flex-col overflow-hidden px-4 py-4 md:flex md:static ${
-        toggleSideMenu ? "absolute h-screen z-10" : "hidden "
+      className={`flex dark:bg-[#202123] bg-gray-200 dark:text-white flex-col overflow-hidden px-4 py-4 md:flex md:static transition-opacity ease-in duration-1000  ${
+        toggleSideMenu ? "absolute left-0 top-0 h-screen z-10" : "hidden"
       }`}
     >
       <div className="flex mb-4 justify-between items-center">
         {toggleSideMenu && (
           <FontAwesomeIcon
             icon={faXmark}
-            className="w-5 md:hidden dark:text-white text-gray-800"
+            className="w-5 md:hidden dark:text-white text-[#757575]"
             onClick={handleSideMenu}
           />
         )}
