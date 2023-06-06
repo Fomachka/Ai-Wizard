@@ -11,6 +11,9 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      gridTemplateColumns: {
+        flexible: "minmax(auto, 320px) 1fr",
+      },
       transitionProperty: {
         width: "width",
       },

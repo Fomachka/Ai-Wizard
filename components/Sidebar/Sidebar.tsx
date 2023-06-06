@@ -68,8 +68,10 @@ const Sidebar = ({
 
   return (
     <div
-      className={`flex dark:bg-[#202123] bg-gray-200 dark:text-white flex-col overflow-hidden px-4 py-4 md:flex md:static transition-opacity ease-in duration-1000  ${
-        toggleSideMenu ? "absolute left-0 top-0 h-screen z-10" : "hidden"
+      className={`flex dark:bg-[#202123] bg-gray-200 dark:text-white flex-col overflow-hidden px-4 py-4 md:flex md:static transition-all ease-out duration-800 ${
+        toggleSideMenu
+          ? "fixed h-screen z-10"
+          : "fixed -ml-[9999px] md:ml-0 md:transition-none"
       }`}
     >
       <div className="flex mb-4 justify-between items-center">
@@ -89,6 +91,7 @@ const Sidebar = ({
       <Link
         href="/chat"
         className="py-4 px-6 bg-[#ffe895] dark:hover:bg-[#e1cf8e] hover:bg-[#f3de8d] transition-colors rounded-lg text-[#202123] flex gap-4 "
+        onClick={handleSideMenu}
       >
         <FontAwesomeIcon icon={faPlus} className="text-[#202123] w-3" />
         <p>Create new chat</p>
@@ -103,6 +106,7 @@ const Sidebar = ({
           <Link
             href={`/chat/${chat._id}`}
             key={chat._id}
+            onClick={handleSideMenu}
             className={`py-3 px-4 rounded-lg space-y-1 items-center dark:hover:bg-[#343641] hover:bg-slate-400/50 ${
               chatId === chat._id ? "dark:bg-[#343641] bg-slate-400/30 " : ""
             }`}

@@ -154,7 +154,9 @@ const Chat = ({
       <Head>
         <title>{title}</title>
       </Head>
-      <div className={`grid h-screen md:grid-cols-[320px_1fr] relative overflow-y-auto`}>
+      <div
+        className={`grid h-screen md:grid-cols-[320px_1fr] grid-cols-auto relative overflow-y-auto`}
+      >
         <Sidebar
           chatId={chatId}
           toggleSideMenu={toggleMenu}
