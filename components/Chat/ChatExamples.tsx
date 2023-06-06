@@ -1,5 +1,4 @@
 import {
-  faCheck,
   faHandSparkles,
   faHatWizard,
   faWandMagic,
