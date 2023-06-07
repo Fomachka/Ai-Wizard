@@ -10,14 +10,12 @@ export default async function handler(req: any) {
     let chatId = chatIdParam;
 
     if (!message || typeof message !== "string" || message.length > 300) {
-      return new Response(
-        {
-          message: "Enter a message that is 300 characters or less",
-        },
-        {
-          status: 422,
-        }
-      );
+      let blob = new Blob();
+      const options = {
+        message: "Enter a message that is 300 characters or less",
+        status: 422,
+      };
+      return new Response(blob, options);
     }
 
     const infoAboutAI = {
@@ -119,11 +117,11 @@ export default async function handler(req: any) {
 
     return new Response(stream);
   } catch (error) {
-    return new Response(
-      { message: "AI has failed to answer a question." },
-      {
-        status: 500,
-      }
-    );
+    let blob = new Blob();
+    const options = {
+      message: "AI has failed to answer a question.",
+      status: 500,
+    };
+    return new Response(blob, options);
   }
 }

@@ -126,14 +126,23 @@ const Chat = ({
         message: text,
       }),
     });
+
     const data = response.body;
+    if (!response.ok) {
+      console.log("not okay");
+    }
+
     if (!data) {
+      console.log("doesn exist");
       return;
     }
 
     const reader = data.getReader();
+    console.log(reader);
+
     let content = "";
     await streamReader(reader, (text) => {
+      console.log(text);
       if (text.event === "newChatId") {
         setNewChatId(text.content);
       } else {
@@ -222,6 +231,7 @@ const Chat = ({
               <form onSubmit={handleSubmit}>
                 <fieldset className="flex relative" disabled={isLoading}>
                   <textarea
+                    maxLength={300}
                     value={text}
                     onChange={(e) => handleMessage(e)}
                     className="w-full resize-none rounded-lg dark:bg-[#1C1A1D] py-4 px-4 max-h-18 bg-[#ebecef] dark:text-[#D1D5DB] text-[#454444] focus:outline  focus:outline-gray-400 lg:text-lg tracking-wide"
@@ -231,8 +241,8 @@ const Chat = ({
                   <button
                     type="submit"
                     className="absolute right-6 top-1/2 p-3 rounded-md transform -translate-y-1/2  dark:disabled:bg-gray-500 
-                    disabled:bg-gray-400/70 disabled:cursor-not-allowed dark:hover:bg-[#252527] hover:bg-[#d1d0d365]"
-                    disabled={isLoading}
+                    disabled:bg-[#d1d0d365] disabled:cursor-not-allowed dark:hover:bg-[#252527] hover:bg-[#d1d0d365]"
+                    disabled={isLoading || text.length === 0}
                   >
                     <FontAwesomeIcon
                       icon={faPaperPlane}
