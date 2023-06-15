@@ -68,9 +68,9 @@ const Sidebar = ({
 
   return (
     <div
-      className={`flex dark:bg-[#202123] bg-gray-200 dark:text-white flex-col overflow-hidden px-4 py-4 md:flex md:static transition-all ease-out duration-800 ${
+      className={`flex dark:bg-[#202123] bg-gray-200 dark:text-white flex-col  px-4 py-4 md:flex md:static transition-all ease-out duration-800  ${
         toggleSideMenu
-          ? "fixed h-screen z-10"
+          ? "absolute h-screen z-10 max-w-[320px] "
           : "fixed -ml-[9999px] md:ml-0 md:transition-none"
       }`}
     >
