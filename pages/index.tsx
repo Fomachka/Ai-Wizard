@@ -5,12 +5,14 @@ import { getSession } from "@auth0/nextjs-auth0";
 import { GetServerSideProps } from "next";
 import { faHatWizard } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Loading from "components/Loader/Loading";
+import ErrorPage from "components/Error/ErrorPage";
 
 export default function Home() {
   const { isLoading, error, user } = useUser();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
+  if (isLoading) return <Loading />;
+  if (error) return <ErrorPage />;
 
   return (
     <div>
