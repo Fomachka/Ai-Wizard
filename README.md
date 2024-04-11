@@ -1,8 +1,52 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ai-Wizard
+![2024-04-11 15 05 37](https://github.com/Fomachka/Ai-Wizard/assets/47694895/7d37e1b3-ece2-4b32-a087-0874917c4dc1)
+
+
+Ai-Wizard is a web application built with Next.js, Typescript and Open AI. It is a Chat-GPT like platform where user asks certain question for Artificial Intelligence to answer. It provides an interactive platform where you can experiment with and unleash the creative potential of AI through conversation. It provides a login authentification, user and chat history.
+ 
+## Table of Contents
+
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+
+## Features
+
+- **User Authentification:** User registration and user authentification with Next.js Auth.
+- **Profile and Chat History:** Delete, create or edit a chat history of your choice.
+- **AI Generated Response:** Artificial Intelligence interaction through a human like conversation.
+
+## Technologies Used
+
+- **Frontend:** Next.js, HTML, CSS, Typescript
+- **Backend:** OpenAI API
+- **Database:** MongoDB
+- **Authentication:** NextAuth.js
+- **Deployment:** Vercel
 
 ## Getting Started
 
-First, run the development server:
+To get a local copy up and running follow these simple steps.
+
+### Prerequisites
+
+- Node.js https://nodejs.org/en
+- NPM https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
+
+### Installation
+
+1. Clone the repo
+git clone ```https://github.com/Fomachka/Ai-Wizard.git```
+
+2. Install NPM packages
+```npm install```
+
+3. Set up environment variables (e.g., Supabase Account, JWT secret).
+
+4. Start the development server
 
 ```bash
 npm run dev
@@ -18,17 +62,7 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Learn More
+## Usage
 
-To learn more about Next.js, take a look at the following resources:
+- Access the application in your web browser at `http://localhost:3000`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
