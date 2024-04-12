@@ -1,6 +1,7 @@
 # Ai-Wizard
-![2024-04-11 15 05 37](https://github.com/Fomachka/Ai-Wizard/assets/47694895/7d37e1b3-ece2-4b32-a087-0874917c4dc1)
+🌏 [Check Online](https://ai-wizard-three.vercel.app)
 
+![2024-04-12 10 20 35](https://github.com/Fomachka/Ai-Wizard/assets/47694895/3c890363-0498-4209-bd7e-d9dc3a339ba4)
 
 Ai-Wizard is a web application built with Next.js, Typescript and Open AI. It is a Chat-GPT like platform where user asks certain question for Artificial Intelligence to answer. It provides an interactive platform where you can experiment with and unleash the creative potential of AI through conversation. It provides a login authentification, user and chat history.
  
